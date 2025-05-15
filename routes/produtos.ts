@@ -46,7 +46,7 @@ const produtoSchema = z.object({
   marcaId: z.number().int().positive().min(1,
     { message: "Marca deve ser maior que zero" }),
   foto: z.string(),
-  tamanho: z.number().int().positive().optional(),
+  volumeMl: z.number().int().positive().optional(),
 })
 
 router.get("/", async (req, res) => {
@@ -71,12 +71,12 @@ router.post("/", async (req, res) => {
     return
   }
 
-  const { nome, descricao, preco, categoria, estoque, marcaId, foto, tamanho} = valida.data
+  const { nome, descricao, preco, categoria, estoque, marcaId, foto, volumeMl} = valida.data
 
   try {
     const produto = await prisma.produto.create({
       data: {
-        nome, descricao, preco, categoria, estoque, marca_id: marcaId, foto, tamanho
+        nome, descricao, preco, categoria, estoque, marca_id: marcaId, foto, volumeMl
       }
     })
     res.status(201).json(produto)
@@ -107,13 +107,13 @@ router.patch("/:id", async (req, res) => {
     return
   }
 
-  const { nome, descricao, preco, categoria, estoque, marcaId, foto, tamanho } = valida.data
+  const { nome, descricao, preco, categoria, estoque, marcaId, foto, volumeMl } = valida.data
 
   try {
     const produto = await prisma.produto.update({
       where: { id: Number(id) },
       data: {
-        nome, descricao, preco, categoria, estoque, marca_id: marcaId, foto, tamanho
+        nome, descricao, preco, categoria, estoque, marca_id: marcaId, foto, volumeMl
       }
     })
     res.status(200).json(produto)
@@ -125,10 +125,8 @@ router.patch("/:id", async (req, res) => {
 router.get("/pesquisa/:termo", async (req, res) => {
   const { termo } = req.params
 
-  // tenta converter para número
   const termoNumero = Number(termo)
 
-  // is Not a Number, ou seja, se não é um número: filtra por texto
   if (isNaN(termoNumero)) {
     try {
       const produtos = await prisma.produto.findMany({
@@ -136,20 +134,18 @@ router.get("/pesquisa/:termo", async (req, res) => {
           marca: true,
         },
         where: {
-          // OR: [
-          //   // mode: "insensitive" - para pesquisas no PostgreSQL não diferenciarem
-          //   // caracteres maiúsculas de minúsculas (MySQL, não precisa)
-          //   { nome: { contains: termo, mode: "insensitive" } },
-          //   { marca: { nome: { equals: termo, mode: "insensitive" } } }
-          // ]
-        }
+          OR: [
+            { nome: { contains: termo, mode: "insensitive" } },
+            { descricao: { contains: termo, mode: "insensitive" } },
+            { marca: { nome: { contains: termo, mode: "insensitive" } } }
+          ]
+        },
       })
       res.status(200).json(produtos)
     } catch (error) {
       res.status(500).json({ erro: error })
     }
   } else {
-    // Para números "pequenos", pesquisa por ano
     if (termoNumero <= 3000) {
       try {
         const produtos = await prisma.produto.findMany({
@@ -161,8 +157,7 @@ router.get("/pesquisa/:termo", async (req, res) => {
         res.status(200).json(produtos)
       } catch (error) {
         res.status(500).json({ erro: error })
-      } 
-      // else: para números "maiores", pesquisa por preço 
+      }
     } else {
       try {
         const produtos = await prisma.produto.findMany({
@@ -179,26 +174,30 @@ router.get("/pesquisa/:termo", async (req, res) => {
   }
 })
 
-router.get("/:id", async (req, res) => {
-  const { id } = req.params
+
+router.get("/produtos/filtro", async (req, res) => {
+  const { marca, tipo, precoMin, precoMax } = req.query
 
   try {
-    const produto = await prisma.produto.findUnique({
-      where: { id: Number(id)},
-      include: {
-        marca: true,
-        fotos: true
-      }
+    const produtos = await prisma.produto.findMany({
+      include: { marca: true },
+      where: {
+        ...(marca && { marca_id: Number(marca) }),
+        ...(tipo && { categoria: typeof tipo === 'string' ? tipo : undefined }),
+        ...(precoMin && { preco: { gte: Number(precoMin) } }),
+        ...(precoMax && { preco: { lte: Number(precoMax) } }),
+      },
     })
-    res.status(200).json(produto)
+
+    res.status(200).json(produtos)
   } catch (error) {
-    res.status(400).json(error)
+    console.error("Erro ao filtrar produtos:", error)
+    res.status(500).json({ erro: error })
   }
 })
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params
-
   try {
     const produto = await prisma.produto.findUnique({
       where: { id: Number(id) },
@@ -209,7 +208,7 @@ router.get("/:id", async (req, res) => {
     })
     res.status(200).json(produto)
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json({ erro: error })
   }
 })
 
