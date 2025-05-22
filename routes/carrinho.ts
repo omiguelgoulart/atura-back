@@ -1,91 +1,98 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, STATUS_ITEM } from '@prisma/client'
 import { Router } from 'express'
 import { z } from 'zod'
 
 const prisma = new PrismaClient()
-
 const router = Router()
 
 const carrinhoSchema = z.object({
   quantidade: z.number().positive(),
   produtoId: z.number(),
-  clienteId: z.string().uuid(),
+  clienteId: z.string().uuid()
 })
 
-router.get("/", async (req, res) => {
+// ✅ GET - Itens no carrinho (status = CARRINHO)
+router.get("/clienteId/:clienteId", async (req, res) => {
+  const { clienteId } = req.params
+
   try {
-    const carrinho = await prisma.carrinho.findMany({
+    const itensCarrinho = await prisma.itemTransacao.findMany({
+      where: {
+        clienteId,
+        status: STATUS_ITEM.CARRINHO
+      },
       include: {
-        produto: true,
-        cliente: true
+        produto: true
       }
     })
-    res.status(200).json(carrinho)
+    res.status(200).json(itensCarrinho)
   } catch (error) {
-    res.status(500).json({ erro: error })
+    res.status(500).json({ erro: "Erro ao buscar carrinho", detalhes: error })
   }
 })
 
+// ✅ POST - Adicionar item ao carrinho
 router.post("/", async (req, res) => {
-
   const valida = carrinhoSchema.safeParse(req.body)
   if (!valida.success) {
-    res.status(400).json({ erro: valida.error })
-    return
+    return res.status(400).json({ erro: valida.error })
   }
 
   const { quantidade, produtoId, clienteId } = valida.data
 
   try {
-    const carrinho = await prisma.carrinho.create({
+    const item = await prisma.itemTransacao.create({
       data: {
         quantidade,
-        produto: { connect: { id: produtoId } },
-        cliente: { connect: { id: clienteId } }
+        preco_unitario: (await prisma.produto.findUnique({ where: { id: produtoId } }))?.preco || 0,
+        produtoId,
+        clienteId,
+        status: STATUS_ITEM.CARRINHO
       }
     })
-    res.status(201).json(carrinho)
+    res.status(201).json(item)
   } catch (error) {
-    res.status(400).json({ error })
+    res.status(400).json({ erro: "Erro ao adicionar item", detalhes: error })
   }
 })
 
+// ✅ DELETE - Remover item do carrinho
 router.delete("/:id", async (req, res) => {
   const { id } = req.params
 
   try {
-    const carrinho = await prisma.carrinho.delete({
+    const item = await prisma.itemTransacao.delete({
       where: { id: Number(id) }
     })
-    res.status(200).json(carrinho)
+    res.status(200).json(item)
   } catch (error) {
-    res.status(400).json({ erro: error })
+    res.status(400).json({ erro: "Erro ao remover item", detalhes: error })
   }
 })
 
+// ✅ PATCH - Atualizar item do carrinho
 router.patch("/:id", async (req, res) => {
   const { id } = req.params
 
   const valida = carrinhoSchema.safeParse(req.body)
   if (!valida.success) {
-    res.status(400).json({ erro: valida.error })
-    return
+    return res.status(400).json({ erro: valida.error })
   }
 
   const { quantidade, produtoId, clienteId } = valida.data
 
   try {
-    const carrinho = await prisma.carrinho.update({
+    const item = await prisma.itemTransacao.update({
       where: { id: Number(id) },
       data: {
         quantidade,
-        produto: { connect: { id: produtoId } },
-        cliente: { connect: { id: clienteId } }
+        produtoId,
+        clienteId
       }
     })
-    res.status(200).json(carrinho)
+    res.status(200).json(item)
   } catch (error) {
-    res.status(400).json({ erro: error })
+    res.status(400).json({ erro: "Erro ao atualizar item", detalhes: error })
   }
 })
 
