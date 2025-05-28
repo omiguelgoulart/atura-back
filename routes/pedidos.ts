@@ -3,33 +3,6 @@ import { Router } from "express";
 import { z } from "zod";
 
 const prisma = new PrismaClient();
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'error',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'info',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'warn',
-//     },
-//   ],
-// })
-
-// prisma.$on('query', (e) => {
-//   console.log('Query: ' + e.query)
-//   console.log('Params: ' + e.params)
-//   console.log('Duration: ' + e.duration + 'ms')
-// })
-
 const router = Router();
 
 const pedidoSchema = z.object({
@@ -44,7 +17,7 @@ const pedidoSchema = z.object({
   total: z.number().positive(),
   clienteId: z.string().uuid(),
   enderecoId: z.number(),
-  itemPedido: z.array(
+  itens: z.array(
     z.object({
       produtoId: z.number(),
       quantidade: z.number().positive(),
@@ -59,7 +32,7 @@ router.get("/", async (req, res) => {
       include: {
         cliente: true,
         endereco: true,
-        itemPedido: {
+        itens: {
           include: { produto: true },
         },
       },
@@ -77,7 +50,7 @@ router.post("/", async (req, res) => {
       return
     }
 
-  const { date, status, total, clienteId, enderecoId, itemPedido } =
+  const { date, status, total, clienteId, enderecoId, itens } =
     valida.data;
 
   try {
@@ -87,8 +60,8 @@ router.post("/", async (req, res) => {
       total,
       cliente: { connect: { id: clienteId } },
       endereco: { connect: { id: enderecoId } },
-      itemPedido: {
-        create: itemPedido.map((item) => ({
+      itemPeditensido: {
+        create: itens.map((item) => ({
           produto: { connect: { id: item.produtoId } },
           quantidade: item.quantidade,
           preco_unitario: item.preco_unitario,
@@ -127,12 +100,12 @@ router.patch("/:id", async (req, res) => {
     return res.status(400).json({ erro: valida.error.format() });
   }
 
-  const { date, status, total, clienteId, enderecoId, itemPedido } =
+  const { date, status, total, clienteId, enderecoId, itens } =
     valida.data;
 
   try {
     // remover os itens anteriores (opcional, dependendo da sua lógica)
-    await prisma.itemPedido.deleteMany({
+    await prisma.itemTransacao.deleteMany({
       where: { pedidoId: Number(req.params.id) },
     });
 
@@ -141,8 +114,8 @@ router.patch("/:id", async (req, res) => {
       total,
       cliente: { connect: { id: clienteId } },
       endereco: { connect: { id: enderecoId } },
-      itemPedido: {
-        create: itemPedido.map((item) => ({
+      itens: {
+        create: itens.map((item) => ({
           produto: { connect: { id: item.produtoId } },
           quantidade: item.quantidade,
           preco_unitario: item.preco_unitario,
@@ -163,6 +136,28 @@ if (date) {
     res.status(200).json(pedido);
   } catch (error) {
     res.status(400).json({ erro: error });
+  }
+});
+
+router.get("/:clienteId/itens", async (req, res) => {
+  const { clienteId } = req.params;
+
+  try {
+    const itens = await prisma.itemTransacao.findMany({
+      where: {
+        status: "PEDIDO",
+        clienteId: clienteId,
+      },
+      include: {
+        produto: true,
+        cliente: true, // <- Aqui você inclui os dados do cliente no retorno
+      },
+    });
+
+    res.status(200).json(itens);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao buscar o carrinho do cliente." });
   }
 });
 

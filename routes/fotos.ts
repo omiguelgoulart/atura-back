@@ -1,76 +1,82 @@
-import { PrismaClient } from '@prisma/client'
-import { Router } from 'express'
-import { v2 as cloudinary } from 'cloudinary'
-import { z } from 'zod'
-import { UploadedFile } from 'express-fileupload'
+// import {  PrismaClient } from '@prisma/client'
+// import { Router } from 'express'
+// import { z } from 'zod'
+// import multer from 'multer'
+// import { CloudinaryStorage } from 'multer-storage-cloudinary'
+// import { v2 as cloudinary } from 'cloudinary'
 
-const prisma = new PrismaClient()
 
-const router = Router()
+// // Configuração do Cloudinary
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
+//   api_key: process.env.CLOUDINARY_API_KEY || '',
+//   api_secret: process.env.CLOUDINARY_API_SECRET || ''
+// })
 
-// Configuração do Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-  api_key: process.env.CLOUDINARY_API_KEY || '',
-  api_secret: process.env.CLOUDINARY_API_SECRET || ''
-})
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   params: async (req, file) => {
+//     return {
+//       folder: 'imagens_carros',
+//       allowed_formats: ['jpg', 'jpeg', 'png'],
+//       public_id: `${Date.now()}-${file.originalname.split(".")[0]}`,
+//     }  
+//   },
+// })
 
-// Validação com Zod
-const fotoSchema = z.object({
-  descricao: z.string().min(5, {
-    message: "Descrição da Foto deve possuir, no mínimo, 5 caracteres"
-  }),
-  produtoId: z.coerce.number()
-})
+// const upload = multer({ storage })
 
-// ROTA GET - Listar fotos
-router.get("/", async (req, res) => {
-  try {
-    const fotos = await prisma.fotos.findMany({
-      include: { produto: true }
-    })
-    res.status(200).json(fotos)
-  } catch (error) {
-    res.status(500).json({ erro: error instanceof Error ? error.message : String(error) })
-  }
-})
+// const prisma = new PrismaClient()
 
-// ROTA POST - Upload de imagem com Cloudinary
-router.post("/", async (req, res) => {
-  const valida = fotoSchema.safeParse(req.body)
+// const router = Router()
 
-  if (!valida.success) {
-    return res.status(400).json({ erro: valida.error.format() })
-  }
 
-  if (!req.files || !('imagem' in req.files)) {
-    return res.status(400).json({ erro: "Envio da imagem é obrigatório" })
-  }
+// // Validação com Zod
+// const fotoSchema = z.object({
+//   descricao: z.string().min(5, {
+//     message: "Descrição da Foto deve possuir, no mínimo, 5 caracteres"
+//   }),
+//   produtoId: z.coerce.number()
+// })
 
-  const imagem = req.files.imagem as UploadedFile
-  const { descricao, produtoId } = valida.data
+// router.get("/", async (req, res) => {
+//   try {
+//     const fotos = await prisma.foto.findMany({
+//       include: {
+//         carro: true,
+//       }
+//     })
+//     res.status(200).json(fotos)
+//   } catch (error) {
+//     res.status(500).json({ erro: error })
+//   }
+// })
 
-  try {
-    const resultado = await cloudinary.uploader.upload(imagem.tempFilePath, {
-      folder: 'imagens_carros'
-    })
+// router.post("/", upload.single('imagem'), async (req, res) => {
 
-    const foto = await prisma.fotos.create({
-      data: {
-        descricao,
-        produtoId,
-        url: resultado.secure_url
-      }
-    })
+//   const valida = fotoSchema.safeParse(req.body)
+//   if (!valida.success) {
+//     res.status(400).json({ erro: valida.error })
+//     return
+//   }
 
-    res.status(201).json(foto)
-  } catch (error) {
-    console.error("ERRO AO CRIAR FOTO:")
-    console.dir(error, { depth: null })
-    res.status(500).json({
-      error: error instanceof Error ? error.message : String(error)
-    })
-  }
-})
+//   if (!req.file || !req.file.path) {
+//     res.status(400).json(
+//       {erro: "Envio da imagem é obrigatório"})
+//     return
+//   }
 
-export default router
+//   const { descricao, carroId } = valida.data
+//   const urlFoto = req.file.path
+
+//   try {
+//     const foto = await prisma.foto.create({
+//       data: { descricao, carroId, url: urlFoto }
+//     })
+//     res.status(201).json(foto)
+//   } catch (error) {
+//     res.status(400).json({ error })
+//   }
+// })
+
+// export default router

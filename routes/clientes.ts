@@ -61,4 +61,26 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:clienteId/itens", async (req, res) => {
+  const { clienteId } = req.params;
+
+  try {
+    const itens = await prisma.itemTransacao.findMany({
+      where: {
+        status: "FINALIZADO",
+        clienteId: clienteId,
+      },
+      include: {
+        produto: true,
+        cliente: true, // <- Aqui você inclui os dados do cliente no retorno
+      },
+    });
+
+    res.status(200).json(itens);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao buscar o carrinho do cliente." });
+  }
+});
+
 export default router;

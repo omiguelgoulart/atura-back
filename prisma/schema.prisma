@@ -120,14 +120,14 @@ enum STATUS {
 
 model ItemTransacao {
   id             Int       @id @default(autoincrement())
-  status         STATUS_ITEM
-  quantidade     Int
+  status         STATUS_ITEM  @default(CARRINHO)
+  quantidade     Int          @default(1)
   preco_unitario Decimal   @db.Decimal(10, 2)
   cliente        Cliente?   @relation("ClienteToItemTransacao", fields: [clienteId], references: [id])
   clienteId      String
 
-  produto        Produto   @relation(fields: [produtoId], references: [id])
-  produtoId      Int
+  produto        Produto?   @relation(fields: [produtoId], references: [id])
+  produtoId      Int?
 
   pedido         Pedido?   @relation(fields: [pedidoId], references: [id])
   pedidoId       Int?
@@ -135,7 +135,7 @@ model ItemTransacao {
   criadoEm       DateTime  @default(now())
   atualizadoEm   DateTime  @updatedAt
 
-  @@map("itens_transacao")
+  @@map("itensTransacao")
 }
 
 enum STATUS_ITEM {

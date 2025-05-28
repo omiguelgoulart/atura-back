@@ -2,7 +2,7 @@ import express from 'express'
 import fileUpload from 'express-fileupload'
 import routesProdutos from './routes/produtos'
 import routesMarcas from './routes/marcas'
-import routesFotos from './routes/fotos'
+// import routesFotos from './routes/fotos'
 import routesPedidos from './routes/pedidos'
 import routesAvaliacoes from './routes/avaliacoes'
 import routesCarrinho from './routes/carrinho'
@@ -23,7 +23,7 @@ app.use('/avaliacoes', routesAvaliacoes)
 app.use('/carrinho', routesCarrinho)
 app.use('/clientes', routesClientes)
 app.use('/enderecos', routesEnderecos)
-app.use('/fotos', routesFotos)
+// app.use('/fotos', routesFotos)
 app.use('/itemPedido', routesItemPedido)
 app.use('/login', routesLogin)
 app.use('/marcas', routesMarcas)
