@@ -179,7 +179,11 @@ router.get("/:id", async (req, res) => {
       include: {
         marca: true,
         fotos: true,
-        avaliacao: true // Adiciona as avaliações relacionadas ao produto
+        avaliacao: {
+          include: {
+            cliente: true // Inclui o cliente relacionado à avaliação
+          }
+        }
       }
     })
     res.status(200).json(produto)
