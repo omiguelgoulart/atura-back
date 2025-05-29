@@ -3,32 +3,7 @@ import { Router } from 'express'
 import { z } from 'zod'
 
 const prisma = new PrismaClient()
-// const prisma = new PrismaClient({
-//   log: [
-//     {
-//       emit: 'event',
-//       level: 'query',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'error',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'info',
-//     },
-//     {
-//       emit: 'stdout',
-//       level: 'warn',
-//     },
-//   ],
-// })
 
-// prisma.$on('query', (e) => {
-//   console.log('Query: ' + e.query)
-//   console.log('Params: ' + e.params)
-//   console.log('Duration: ' + e.duration + 'ms')
-// })
 
 const router = Router()
 
@@ -203,7 +178,8 @@ router.get("/:id", async (req, res) => {
       where: { id: Number(id) },
       include: {
         marca: true,
-        fotos: true
+        fotos: true,
+        avaliacao: true // Adiciona as avaliações relacionadas ao produto
       }
     })
     res.status(200).json(produto)

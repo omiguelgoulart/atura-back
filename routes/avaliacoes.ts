@@ -9,7 +9,6 @@ const router = Router()
 const avaliacaoSchema = z.object({
     nota: z.number().min(1).max(5),
     comentario: z.string().optional(),
-    date: z.string(),
     produtoId: z.number(),
     clienteId: z.string().uuid(),
   
@@ -37,14 +36,13 @@ router.post("/", async (req, res) => {
         return
     }
 
-    const { nota, comentario, date, produtoId, clienteId } = valida.data
+    const { nota, comentario, produtoId, clienteId } = valida.data
 
     try {
         const avaliacao = await prisma.avaliacao.create({
             data: {
                 nota,
                 comentario,
-                date: new Date(Date.parse(date)),
                 produto: { connect: { id: produtoId } },
                 cliente: { connect: { id: clienteId } }
             }
@@ -77,7 +75,7 @@ router.patch("/:id", async (req, res) => {
         return
     }
 
-    const { nota, comentario, date, produtoId, clienteId } = valida.data
+    const { nota, comentario, produtoId, clienteId } = valida.data
 
     try {
         const avaliacao = await prisma.avaliacao.update({
@@ -85,7 +83,6 @@ router.patch("/:id", async (req, res) => {
             data: {
                 nota,
                 comentario,
-                date: new Date(Date.parse(date)),
                 produto: { connect: { id: produtoId } },
                 cliente: { connect: { id: clienteId } }
             }
