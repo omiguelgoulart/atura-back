@@ -34,26 +34,50 @@ router.get("/:clienteId/itens", async (req, res) => {
 
 // ✅ POST - Adicionar item ao carrinho
 router.post("/", async (req, res) => {
-  const valida = carrinhoSchema.safeParse(req.body)
-  if (!valida.success) {
-    return res.status(400).json({ erro: valida.error })
+  const { produtoId, quantidade, clienteId } = req.body
+
+  if (!clienteId || !produtoId || !quantidade) {
+    return res.status(400).json({ error: "Campos obrigatórios ausentes" })
   }
 
-  const { quantidade, produtoId, clienteId } = valida.data
-
   try {
-    const item = await prisma.itemTransacao.create({
-      data: {
-        quantidade,
-        preco_unitario: (await prisma.produto.findUnique({ where: { id: produtoId } }))?.preco || 0,
-        produtoId,
-        clienteId,
-        status: STATUS_ITEM.CARRINHO
-      }
+    // Verifica se o cliente existe
+    const cliente = await prisma.cliente.findUnique({ where: { id: clienteId } })
+    if (!cliente) {
+      return res.status(404).json({ error: "Cliente não encontrado" })
+    }
+
+    // Verifica se o produto existe
+    const produto = await prisma.produto.findUnique({ where: { id: produtoId } })
+    if (!produto) {
+      return res.status(404).json({ error: "Produto não encontrado" })
+    }
+
+    // Adiciona ao carrinho (ou atualiza quantidade, se já existir)
+    const carrinhoExistente = await prisma.itemTransacao.findFirst({
+      where: { clienteId, produtoId },
     })
-    res.status(201).json(item)
+
+    if (carrinhoExistente) {
+      await prisma.itemTransacao.update({
+        where: { id: carrinhoExistente.id },
+        data: { quantidade: carrinhoExistente.quantidade + quantidade },
+      })
+    } else {
+      await prisma.itemTransacao.create({
+        data: { 
+          clienteId, 
+          produtoId, 
+          quantidade, 
+          preco_unitario: produto.preco // Adiciona o preço unitário do produto
+        },
+      })
+    }
+
+    return res.status(200).json({ message: "Produto adicionado ao carrinho" })
   } catch (error) {
-    res.status(400).json({ erro: "Erro ao adicionar item", detalhes: error })
+    console.error(error)
+    return res.status(500).json({ error: "Erro ao adicionar ao carrinho" })
   }
 })
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Router } from "express";
+import e, { Router } from "express";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { validaSenha } from "../utils/validaSenha";
@@ -82,5 +82,41 @@ router.get("/:clienteId/itens", async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar o carrinho do cliente." });
   }
 });
+
+// GET /cliente/:id/carrinho → busca itens do carrinho com status "CARRINHO" para um cliente
+router.get("/:id/carrinho", async (req, res) => {
+  const { id } = req.params
+
+  const clienteId = id; // keep as string
+
+  if (!clienteId) {
+    return res.status(400).json({ error: "ID de cliente inválido" })
+  }
+
+  try {
+    const cliente = await prisma.cliente.findUnique({
+      where: { id: clienteId },
+      include: {
+        itensTransacao: {
+          where: {
+            status: "CARRINHO",
+          },
+          include: {
+            produto: true,
+          },
+        },
+      },
+    })
+
+    if (!cliente) {
+      return res.status(404).json({ error: "Cliente não encontrado" })
+    }
+
+    res.json(cliente.itensTransacao)
+  } catch (error) {
+    console.error("Erro ao buscar carrinho do cliente:", error)
+    res.status(500).json({ error: "Erro interno ao buscar carrinho do cliente" })
+  }
+})
 
 export default router;
