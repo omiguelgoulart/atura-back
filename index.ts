@@ -2,7 +2,8 @@ import express from 'express'
 import fileUpload from 'express-fileupload'
 import routesProdutos from './routes/produtos'
 import routesMarcas from './routes/marcas'
-// import routesFotos from './routes/fotos'
+import routesResposta from './routes/respostaAvaliacao'
+import routesAdmin from './routes/admin'
 import routesPedidos from './routes/pedidos'
 import routesAvaliacoes from './routes/avaliacoes'
 import routesCarrinho from './routes/carrinho'
@@ -28,6 +29,8 @@ app.use('/login', routesLogin)
 app.use('/marcas', routesMarcas)
 app.use('/pedidos', routesPedidos)
 app.use('/produtos', routesProdutos)
+app.use('/respostas', routesResposta)
+app.use('/admin', routesAdmin)
 
 
 app.get('/', (req, res) => {
