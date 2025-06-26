@@ -145,16 +145,42 @@ enum STATUS_ITEM {
 }
 
 model Avaliacao {
-  id         Int      @id @default(autoincrement())
-  nota       Int // de 1 a 5, por exemplo
-  comentario String?  @db.VarChar(500)
-  date       DateTime @default(now())
+  id         Int                 @id @default(autoincrement())
+  nota       Int
+  comentario String?             @db.VarChar(500)
+  date       DateTime            @default(now())
 
-  cliente   Cliente @relation(fields: [clienteId], references: [id])
-  clienteId String
+  cliente    Cliente             @relation(fields: [clienteId], references: [id])
+  clienteId  String
 
-  produto   Produto @relation(fields: [produtoId], references: [id])
-  produtoId Int
+  produto    Produto             @relation(fields: [produtoId], references: [id])
+  produtoId  Int
+
+  respostas  RespostaAvaliacao[]  // 🔁 várias respostas
 
   @@map("avaliacoes")
+}
+
+model RespostaAvaliacao {
+  id           Int       @id @default(autoincrement())
+  mensagem     String    @db.VarChar(1000)
+  respondidoEm DateTime  @default(now())
+
+  avaliacao    Avaliacao @relation(fields: [avaliacaoId], references: [id])
+  avaliacaoId  Int
+
+  admin        Admin?    @relation(fields: [adminId], references: [id])
+  adminId      Int?
+}
+model Admin {
+  id        Int       @id @default(autoincrement())
+  nome      String    @db.VarChar(60)
+  email     String    @unique
+  senha     String    @db.VarChar(60)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  respostas RespostaAvaliacao[] // 🔁 várias respostas
+
+  @@map("admins")
 }
