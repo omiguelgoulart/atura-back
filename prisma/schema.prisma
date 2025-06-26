@@ -170,13 +170,13 @@ model RespostaAvaliacao {
   avaliacaoId  Int
 
   admin        Admin?    @relation(fields: [adminId], references: [id])
-  adminId      Int?
+  adminId      String?
 
   @@map("respostasAvaliacao")
 }
 
 model Admin {
-  id        Int       @id @default(autoincrement())
+  id                String      @id @default(uuid()) @db.VarChar(36)
   nome      String    @db.VarChar(60)
   email     String    @unique
   senha     String    @db.VarChar(60)

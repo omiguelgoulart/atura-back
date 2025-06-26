@@ -22,9 +22,6 @@ router.get("/", async (req, res) => {
         cliente: true,
         respostas: {
           include: {
-            admin: {
-              select: { nome: true }
-            }
           },
           orderBy: {
             respondidoEm: "asc"
