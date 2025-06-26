@@ -11,6 +11,18 @@ const respostaSchema = z.object({
   adminId: z.number().optional(), // O adminId será preenchido pelo middleware verificaToken
 });
 
+// ✅ GET /respostas
+router.get("/", async (req, res) => {
+    try {
+        const respostas = await prisma.respostaAvaliacao.findMany({
+            include: { admin: true }, // Inclui os dados do admin que respondeu
+        });
+        res.status(200).json(respostas);
+    } catch (error) {
+        res.status(400).json({ erro: "Erro ao listar respostas" });
+    }
+});
+
 // ✅ POST /respostas/:avaliacaoId
 router.post("/:avaliacaoId", async (req, res) => {
     const valida = respostaSchema.safeParse(req.body);
