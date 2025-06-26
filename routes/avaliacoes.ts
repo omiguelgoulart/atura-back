@@ -15,18 +15,28 @@ const avaliacaoSchema = z.object({
 })
 
 router.get("/", async (req, res) => {
-    try {
-        const avaliacoes = await prisma.avaliacao.findMany({
-            include: {
-                produto: true,
-                cliente: true
+  try {
+    const avaliacoes = await prisma.avaliacao.findMany({
+      include: {
+        produto: true,
+        cliente: true,
+        respostas: {
+          include: {
+            admin: {
+              select: { nome: true }
             }
-        })
-        res.status(200).json(avaliacoes)
-    } catch (error) {
-        res.status(500).json({ erro: error })
-    }
-})
+          },
+          orderBy: {
+            respondidoEm: "asc"
+          }
+        }
+      }
+    });
+    res.status(200).json(avaliacoes);
+  } catch (error) {
+    res.status(500).json({ erro: error });
+  }
+});
 
 router.post("/", async (req, res) => {
 
