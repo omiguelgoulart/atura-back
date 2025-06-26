@@ -4,6 +4,9 @@ import { Request, Response, NextFunction } from 'express'
 interface TokenI {
   userLogadoId: number
   userLogadoNome: string
+  id: number;
+  nome: string;
+  email: string;
 }
 
 export function verificaToken(req: Request | any, res: Response, next: NextFunction) {

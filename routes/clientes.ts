@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import e, { Router } from "express";
+import { Router } from "express";
 import bcrypt from "bcrypt";
 import { z } from "zod";
 import { validaSenha } from "../utils/validaSenha";
