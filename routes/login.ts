@@ -10,51 +10,54 @@ import { validaSenha } from "../utils/validaSenha";
 const prisma = new PrismaClient();
 const router = Router();
 
-// Função de login
-async function autenticarCliente(email: string, senha: string) {
-  const cliente = await prisma.cliente.findUnique({ where: { email } });
-  if (!cliente) return null;
-
-  const senhaCorreta = await bcrypt.compare(senha, cliente.senha);
-  return senhaCorreta ? cliente : null;
-}
 
 // Rota de login
 router.post("/", async (req, res) => {
-  const { email, senha } = req.body;
-  const mensagemPadrao = "Login ou senha incorretos";
+  console.log("REQ BODY LOGIN:", req.body);
+  const { email, senha, tipo } = req.body;
 
-  if (!email || !senha) {
-    return res.status(400).json({ erro: mensagemPadrao });
+  if (!email || !senha || !tipo) {
+    return res.status(400).json({ erro: "Email, senha e tipo são obrigatórios" });
   }
 
   try {
-    const cliente = await autenticarCliente(email, senha);
+    if (tipo === "cliente") {
+      const cliente = await prisma.cliente.findUnique({ where: { email } });
+      if (!cliente || !(await bcrypt.compare(senha, cliente.senha))) {
+        return res.status(401).json({ erro: "Credenciais inválidas" });
+      }
 
-    if (!cliente) {
-      return res.status(400).json({ erro: mensagemPadrao });
+      const token = jwt.sign(
+        { id: cliente.id, nome: cliente.nome, tipo },
+        process.env.JWT_KEY as string,
+        { expiresIn: "1h" }
+      );
+
+      return res.json({ id: cliente.id, nome: cliente.nome, email: cliente.email, tipo, token });
+
+    } else if (tipo === "admin") {
+      const admin = await prisma.admin.findUnique({ where: { email } });
+      if (!admin || !(await bcrypt.compare(senha, admin.senha))) {
+        return res.status(401).json({ erro: "Credenciais inválidas" });
+      }
+
+      const token = jwt.sign(
+        { id: admin.id, nome: admin.nome, tipo },
+        process.env.JWT_KEY as string,
+        { expiresIn: "1h" }
+      );
+
+      return res.json({ id: admin.id, nome: admin.nome, email: admin.email, tipo, token });
     }
 
-    const token = jwt.sign(
-      {
-        clienteLogadoId: cliente.id,
-        clienteLogadoNome: cliente.nome,
-      },
-      process.env.JWT_KEY as string,
-      { expiresIn: "1h" }
-    );
+    return res.status(400).json({ erro: "Tipo inválido" });
 
-    res.status(200).json({
-      id: cliente.id,
-      nome: cliente.nome,
-      email: cliente.email,
-      token,
-    });
   } catch (error) {
-    console.error("Erro ao fazer login:", error);
-    res.status(500).json({ erro: "Erro interno no servidor" });
+    console.error(error);
+    return res.status(500).json({ erro: "Erro interno no servidor" });
   }
 });
+
 
 // Rota para solicitar recuperação de senha
 router.post("/recupera-senha", async (req, res) => {

@@ -69,7 +69,7 @@ router.delete("/:id", async (req, res) => {
 
     try {
         await prisma.admin.delete({
-            where: { id: Number(id) },
+            where: { id: id },
         });
         res.status(204).send();
     } catch (error) {
@@ -95,7 +95,7 @@ router.patch("/:id", async (req, res) => {
         }
 
         const admin = await prisma.admin.update({
-            where: { id: Number(id) },
+            where: { id: id },
             data: updates,
         });
 
@@ -111,7 +111,7 @@ router.get("/:id", async (req, res) => {
 
     try {
         const admin = await prisma.admin.findUnique({
-            where: { id: Number(id) },
+            where: { id: id },
         });
 
         if (!admin) {

@@ -26,7 +26,7 @@ model Produto {
   nome       String
   descricao  String
   preco      Float
-  categoria  String
+  categoria  CategoriaProduto
   estoque    Int
   volumeMl   Int          @default(0)
   marca      Marca        @relation(fields: [marca_id], references: [id])
@@ -37,6 +37,13 @@ model Produto {
   avaliacao  Avaliacao[]
 
   @@map("produto")
+}
+
+enum CategoriaProduto {
+  MASCULINO
+  FEMININO
+  UNISSEX
+  INFANTIL
 }
 
 model Fotos {

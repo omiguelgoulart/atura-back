@@ -8,7 +8,7 @@ const router = Router();
 // ✅ Schema da resposta
 const respostaSchema = z.object({
   mensagem: z.string().min(1, "Mensagem obrigatória"),
-  adminId: z.number().optional(), // O adminId será preenchido pelo middleware verificaToken
+  adminId:z.string(), // O adminId será preenchido pelo middleware verificaToken
 });
 
 // ✅ GET /respostas
@@ -38,7 +38,7 @@ router.post("/:avaliacaoId", async (req, res) => {
         data: {
             mensagem,
             avaliacaoId: Number(avaliacaoId),
-            adminId: adminId ? Number(adminId) : null, // Se adminId não for fornecido, será null
+            adminId: adminId ? adminId : null
         },
         });
     
@@ -94,7 +94,7 @@ router.patch("/:id", async (req, res) => {
         where: { id: Number(id) },
         data: {
             mensagem,
-            adminId: adminId ? Number(adminId) : null, // Se adminId não for fornecido, será null
+            adminId: adminId ? adminId : null, // Se adminId não for fornecido, será null
         },
         });
     
