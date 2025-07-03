@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "CategoriaProduto" AS ENUM ('MASCULINO', 'FEMININO', 'UNISSEX', 'INFANTIL');
+
+-- CreateEnum
 CREATE TYPE "STATUS_PEDIDO" AS ENUM ('PENDENTE', 'PROCESSANDO', 'ENVIADO', 'ENTREGUE', 'CANCELADO');
 
 -- CreateEnum
@@ -21,7 +24,7 @@ CREATE TABLE "produto" (
     "nome" TEXT NOT NULL,
     "descricao" TEXT NOT NULL,
     "preco" DOUBLE PRECISION NOT NULL,
-    "categoria" TEXT NOT NULL,
+    "categoria" "CategoriaProduto" NOT NULL,
     "estoque" INTEGER NOT NULL,
     "volumeMl" INTEGER NOT NULL DEFAULT 0,
     "marca_id" INTEGER NOT NULL,
@@ -82,18 +85,18 @@ CREATE TABLE "pedidos" (
 );
 
 -- CreateTable
-CREATE TABLE "itens_transacao" (
+CREATE TABLE "itensTransacao" (
     "id" SERIAL NOT NULL,
-    "status" "STATUS_ITEM" NOT NULL,
-    "quantidade" INTEGER NOT NULL,
+    "status" "STATUS_ITEM" NOT NULL DEFAULT 'CARRINHO',
+    "quantidade" INTEGER NOT NULL DEFAULT 1,
     "preco_unitario" DECIMAL(10,2) NOT NULL,
     "clienteId" TEXT NOT NULL,
-    "produtoId" INTEGER NOT NULL,
+    "produtoId" INTEGER,
     "pedidoId" INTEGER,
     "criadoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "atualizadoEm" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "itens_transacao_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "itensTransacao_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -108,8 +111,34 @@ CREATE TABLE "avaliacoes" (
     CONSTRAINT "avaliacoes_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "respostasAvaliacao" (
+    "id" SERIAL NOT NULL,
+    "mensagem" VARCHAR(1000) NOT NULL,
+    "respondidoEm" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "avaliacaoId" INTEGER NOT NULL,
+    "adminId" TEXT,
+
+    CONSTRAINT "respostasAvaliacao_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "admins" (
+    "id" VARCHAR(36) NOT NULL,
+    "nome" VARCHAR(60) NOT NULL,
+    "email" TEXT NOT NULL,
+    "senha" VARCHAR(60) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "admins_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "clientes_email_key" ON "clientes"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "admins_email_key" ON "admins"("email");
 
 -- AddForeignKey
 ALTER TABLE "produto" ADD CONSTRAINT "produto_marca_id_fkey" FOREIGN KEY ("marca_id") REFERENCES "marca"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -127,16 +156,22 @@ ALTER TABLE "pedidos" ADD CONSTRAINT "pedidos_clienteId_fkey" FOREIGN KEY ("clie
 ALTER TABLE "pedidos" ADD CONSTRAINT "pedidos_enderecoId_fkey" FOREIGN KEY ("enderecoId") REFERENCES "enderecos"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "itens_transacao" ADD CONSTRAINT "itens_transacao_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "itensTransacao" ADD CONSTRAINT "itensTransacao_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "itens_transacao" ADD CONSTRAINT "itens_transacao_produtoId_fkey" FOREIGN KEY ("produtoId") REFERENCES "produto"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "itensTransacao" ADD CONSTRAINT "itensTransacao_produtoId_fkey" FOREIGN KEY ("produtoId") REFERENCES "produto"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "itens_transacao" ADD CONSTRAINT "itens_transacao_pedidoId_fkey" FOREIGN KEY ("pedidoId") REFERENCES "pedidos"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "itensTransacao" ADD CONSTRAINT "itensTransacao_pedidoId_fkey" FOREIGN KEY ("pedidoId") REFERENCES "pedidos"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "avaliacoes" ADD CONSTRAINT "avaliacoes_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "avaliacoes" ADD CONSTRAINT "avaliacoes_produtoId_fkey" FOREIGN KEY ("produtoId") REFERENCES "produto"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "respostasAvaliacao" ADD CONSTRAINT "respostasAvaliacao_avaliacaoId_fkey" FOREIGN KEY ("avaliacaoId") REFERENCES "avaliacoes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "respostasAvaliacao" ADD CONSTRAINT "respostasAvaliacao_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "admins"("id") ON DELETE SET NULL ON UPDATE CASCADE;
