@@ -222,4 +222,58 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// ✅ Rota para cadastro em lote de produtos
+router.post("/lote", async (req, res) => {
+  const produtos = req.body;
+
+  if (!Array.isArray(produtos)) {
+    return res.status(400).json({ erro: "Esperado um array de produtos" });
+  }
+
+  // Valida cada produto individualmente
+  const erros: any[] = [];
+  const dadosValidados: any[] = [];
+
+  produtos.forEach((produto, index) => {
+    const valida = produtoSchema.safeParse(produto);
+    if (!valida.success) {
+      erros.push({ index, error: valida.error });
+    } else {
+      dadosValidados.push(valida.data);
+    }
+  });
+
+  if (erros.length > 0) {
+    return res.status(400).json({
+      erro: "Alguns produtos estão inválidos",
+      detalhes: erros,
+    });
+  }
+
+  try {
+    const inseridos = await prisma.produto.createMany({
+      data: dadosValidados.map((p) => ({
+        nome: p.nome,
+        descricao: p.descricao,
+        preco: p.preco,
+        categoria: p.categoria,
+        estoque: p.estoque,
+        marca_id: p.marcaId,
+        foto: p.foto,
+        volumeMl: p.volumeMl,
+      })),
+      skipDuplicates: true,
+    });
+
+    res.status(201).json({
+      message: "Produtos cadastrados com sucesso",
+      quantidade: inseridos.count,
+    });
+  } catch (error) {
+    console.error("Erro ao cadastrar produtos em lote:", error);
+    res.status(500).json({ erro: "Erro ao cadastrar produtos" });
+  }
+});
+
+
 export default router;

@@ -1,0 +1,162 @@
+[
+    {
+        "nome": "Botica 214 Dark Mint",
+        "descricao": "Dark Mint é a primeira fragrância masculina em Botica 214. Nossa história começou em 1977 com uma pequena Botica em Curitiba, no número 214. Desde então, a marca O Boticário leva, por meio de sua alquimia, toda a beleza que está por trás das mais nobres criações.    A fragrância traz a força dos contrastes: o frescor da menta com a nobreza dos cedros.       O resultado é um Eau de Parfum sofisticado, refrescante e envolvente.     Com perfumação prolongada, Botica 214 Dark Mint traz a riqueza dos ingredientes naturais em uma nova assinatura de frescor. Fragrância moderna que contrasta as notas tônicas da Menta Marroquina Nanah com a força e a sofisticação do Cedro. Criação marcante que combina frescor com intensidade.      Família olfativa: Fougère Fresco. ",
+        "preco": 279.9,
+        "categoria": "MASCULINO",
+        "estoque": 100,
+        "volumeMl": 90,
+        "marcaId": 1,
+        "foto": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B47630/75247b72-c181-482d-ae93-36794efee230-bot-47630-segredinho.jpg"
+    },
+    {
+        "nome": "Kaiak",
+        "descricao": "Experimente a refrescância única de Kaiak masculino. Este clássico da perfumaria brasileira traz uma combinação icônica e atemporal de notas aromáticas, cítricas e aquosas inspiradas na força das águas. Sinta a poência do frescor que renova e revigora as energias.",
+        "preco": 185.5,
+        "categoria": "MASCULINO",
+        "estoque": 100,
+        "volumeMl": 200,
+        "marcaId": 2,
+        "foto": "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwdaff5036/NATBRA-108400_1.jpg"
+    },
+    {
+        "nome": "1 Million",
+        "descricao": "1 Million de Paco Rabanne apresenta um perfume masculino atrevido com notas frutadas e picantes",
+        "preco": 539.9,
+        "categoria": "MASCULINO",
+        "estoque": 20,
+        "volumeMl": 100,
+        "marcaId": 3,
+        "foto": "https://a-static.mlcdn.com.br/1500x1500/perfume-paco-rabanne-1-million-parfum-masculino-eau-de-parfum-50-ml/amobeleza/1741/58f91dbdbf7e41bfd9d726c1e0c0c982.jpeg"
+    },
+    {
+        "nome": "Feelin Sexy",
+        "descricao": "Feelin Sexy For Him conquista pela intimidade envolvente que revela grandes sensações.",
+        "preco": 153,
+        "categoria": "MASCULINO",
+        "estoque": 40,
+        "volumeMl": 200,
+        "marcaId": 4,
+        "foto": "https://hinodenh.com.br/wp-content/uploads/2021/07/feelin-sexy-for-him-hinode-100ml-2.jpg"
+    },
+    {
+        "nome": "Ferrari Black",
+        "descricao": "Fragrância masculina classificada como cítrico amadeirado",
+        "preco": 210,
+        "categoria": "MASCULINO",
+        "estoque": 40,
+        "volumeMl": 125,
+        "marcaId": 5,
+        "foto": "https://www.ifragrancia.com/imagem/produtos/e/perfume-ferrari-black-versao-anterior-125ml-p-315-1.jpg"
+    },
+    {
+        "nome": "Floratta Romance de Verão",
+        "descricao": "Um dia,  uma noite, um mês. Não importa.   Floratta O Boticário acredita que o romance que você viveu no verão jamais será esquecido.   Por isso, criou Floratta Romance de Verão Desodorante Colônia, uma fragrância da perfumaria feminina adocicada na medida certa e inspirada em flores e frutas tropicais, com um frescor intenso como um romance de verão.",
+        "preco": 159.9,
+        "categoria": "FEMININO",
+        "estoque": 40,
+        "volumeMl": 75,
+        "marcaId": 1,
+        "foto": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B55659/e471db6a-6361-4044-9a18-7b917715d0f2-bot-55659-floratta-romance-de-verao-colonia-frontal-01.jpg"
+    },
+    {
+        "nome": "Her Code",
+        "descricao": "Her Code Eau De Parfum te incentiva a se libertar e buscar o seu próprio prazer. Fragrância sensual, quente e viciante, desperta uma vontade incontrolável de conectar-se consigo mesma.   Este eau de parfum feminino traz o acorde olfativo Código Secreto: único e instigante, uma combinação de ingredientes que despertam prazer, sensualidade e mistério. Um efeito licoroso e inebriante combinado à indulgência das Frutas Vermelhas, com a sofisticação do Jasmim, envelopado com notas de Sândalo.    O frasco, em formato de cadeado, liberta o seu desejo e toda a sua sensualidade, com o ar do mistério e os códigos de sofisticação da linha.   Como o sussurro de um segredo irresistível, a embalagem segreda uma fragrância conectada: frasco com tecnologia que te leva a uma experiência digital imersiva, com conteúdos sobre prazer feminino que te estimulam a descobrir novas possibilidades em busca do seu prazer.   Aproxime seu smartphone no topo do frasco e tenha acesso exclusivo ao portal.   Her code. O prazer é feminino. O prazer é todo seu.   Família Olfativa: Amadeirado Frutal ",
+        "preco": 239.9,
+        "categoria": "FEMININO",
+        "estoque": 40,
+        "volumeMl": 50,
+        "marcaId": 1,
+        "foto": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B50022/e96941b2-24cc-4117-ba35-42b12a2d919a-bot-50022-her-code-perfume-edp-perfume-frontal-01.jpg"
+    },
+    {
+        "nome": "Essencial Atrai",
+        "descricao": "novo deo parfum feminino que exala sensualidade e sofisticação. • fragrância sofisticada e marcante • perfumação prolongada • dura até 10 horas na pele • combina a sensualidade da rosa com a cremosidade do chocolate e o brilho da pimenta rosa brasileira • perfeito para quem gosta de florais intensos.",
+        "preco": 278.9,
+        "categoria": "FEMININO",
+        "estoque": 40,
+        "volumeMl": 100,
+        "marcaId": 2,
+        "foto": "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwdcf047bf/NATBRA-165813_1.jpg"
+    },
+    {
+        "nome": "Ilía Secreto",
+        "descricao": "Ilía Secreto é uma fragrância envolvente e misteriosa que combina notas florais com toques frutados e amadeirados.",
+        "preco": 194.9,
+        "categoria": "FEMININO",
+        "estoque": 40,
+        "volumeMl": 50,
+        "marcaId": 2,
+        "foto": "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwac3a0940/Produtos/PRODUTO/NATBRA-83314_1.jpg"
+    },
+    {
+        "nome": "Natura Homem Meninos",
+        "descricao": "Perfumação amadeirada que celebra o encontro de gerações. O Desodorante Colônia Meninos é uma releitura alegre e leve da fragrância de Natura Homem. Sua perfumação amadeirada agrada aos mais diversos meninos e faz uma homenagem à conexão entre pais e filhos. Tamanho miniatura exclusivo de 25 ml, ideal para levar na mochila.   Fragrância: Amadeirado moderado. Uma combinação de notas frutais frescas, envoltas pelo conforto do musk e um toque aromático do poejo, ingrediente da biodiversidade brasileira. O resultado é uma fragrância única e que agrada aos mais diversos meninos",
+        "preco": 80.3,
+        "categoria": "INFANTIL",
+        "estoque": 40,
+        "volumeMl": 25,
+        "marcaId": 2,
+        "foto": "https://production.na01.natura.com/on/demandware.static/-/Sites-natura-br-storefront-catalog/default/dwbaa88de1/NATBRA-161154_1.jpg"
+    },
+    {
+        "nome": "Homem Sagaz",
+        "descricao": "O Deo Parfum Natura Homem Sagaz é perfeito para o homem que sabe o que quer",
+        "preco": 136.9,
+        "categoria": "MASCULINO",
+        "estoque": 4,
+        "volumeMl": 100,
+        "marcaId": 2,
+        "foto": "https://m.media-amazon.com/images/I/61wc+ABxr+L.jpg"
+    },
+    {
+        "nome": "Grace Midnight",
+        "descricao": "Grace Midnight representa o lado doce da vida e exala toda a exuberância do universo feminino.Desenvolvida especialmente para mulheres sensuais e envolventes, o glamour está presente nesta fragrância que reúne aromas doces e notas suculentas. Revele todo seu charme e sofisticação com Grace Midnight.  Grace Midnight ganhou o prêmio de Melhor Criação Perfumística do Prêmio Atualidade Cosmética em 2016. Perfeito para: Pessoas que buscam fragrâncias marcantes, para encontros românticos e ocasiões especiais.  Família Olfativa: Adocicado Envolvente  Notas Olfativas: Topo: Frésia, Pêssego e Tangerina Corpo: Tuberosa, Orquídea e Muguet Fundo: Baunilha, Praliné e Caramelo",
+        "preco": 169.9,
+        "categoria": "FEMININO",
+        "estoque": 40,
+        "volumeMl": 100,
+        "marcaId": 4,
+        "foto": "https://hinodegroup.vtexassets.com/arquivos/ids/158692-800-auto?v=637884830985300000&width=800&height=auto&aspect=true"
+    },
+    {
+        "nome": "Joyful",
+        "descricao": "Joyful Deo Colôlia Hinode Uma explosão deliciosa de notas florais como a rosa e frutais como a maçã e a mandarina, tornam Joyful uma fragrância leve e descontraída! A embalagem em forma de laço é divertida e nos lembra que os melhores presentes estão sim nos melhores frascos. Apaixone-se!   FAMÍLIA OLFATIVA: Frutal Vibrante  NOTAS OLFATIVAS: Saída: Pêssego, Mandarina Brilhante, Frésia Corpo: Rosa, Vitória-Régia, Flor de Maçã Fundo: Sândalo Cremoso, Pétalas de Violeta, Musk Rosa",
+        "preco": 100,
+        "categoria": "INFANTIL",
+        "estoque": 40,
+        "volumeMl": 100,
+        "marcaId": 4,
+        "foto": "https://hinodegroup.vtexassets.com/arquivos/ids/155483-1600-auto?v=636711703767870000&width=1600&height=auto&aspect=true"
+    },
+    {
+        "nome": "Baby Boti Nana Neném",
+        "descricao": "O contato de pele com pele, a conversinha com o bebê, os cheirinhos, as luzinhas baixas - tudo isso cria uma atmosfera aconchegante para relaxar e ter uma boa noite de sono.    Colônia Infantil Baby Boti Nana Neném garante uma fragrância delicada e relaxante para fechar com muito amor o ritual de cuidados noturno para a pele delicada do seu bebê desde os primeiros dias de vida.   ﻿  A fragrância dessa colônia infantil é suave, segura,  e cria uma atmosfera aconchegante para o momento do soninho. Desenvolvida com muito amor e carinho, sua tecnologia DreamScent ™  otimiza a qualidade do sono do bebê, com base na conexão entre fragrância e estado de humor positivo.    Com 98% ingredientes naturais presentes na fórmula, pensados especialmente para embalar esse momento de relaxamento e também criar memórias para serem guardadas para sempre.    Indicado desde os primeiros dias de vida , não contém álcool e é hipoalergênico, sendo dermatologicamente testado e  recomendado por pediatra.",
+        "preco": 93.9,
+        "categoria": "INFANTIL",
+        "estoque": 40,
+        "volumeMl": 100,
+        "marcaId": 1,
+        "foto": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/products/B47782/BotiBaby_Colonia_100ml_B47782.jpg"
+    },
+    {
+        "nome": "Feelin Sexy for Him Hinode",
+        "descricao": "Feelin Sexy For Him conquista pela intimidade envolvente que revela grandes sensações.",
+        "preco": 153.9,
+        "categoria": "MASCULINO",
+        "estoque": 100,
+        "volumeMl": 200,
+        "marcaId": 1,
+        "foto": "https://hinodenh.com.br/wp-content/uploads/2021/07/feelin-sexy-for-him-hinode-100ml-2.jpg"
+    },
+    {
+        "nome": "Botica 214 Dark Mint",
+        "descricao": "Dark Mint é a primeira fragrância masculina em Botica 214. Nossa história começou em 1977 com uma pequena Botica em Curitiba, no número 214. Desde então, a marca O Boticário leva, por meio de sua alquimia, toda a beleza que está por trás das mais nobres criações.    A fragrância traz a força dos contrastes: o frescor da menta com a nobreza dos cedros.       O resultado é um Eau de Parfum sofisticado, refrescante e envolvente.     Com perfumação prolongada, Botica 214 Dark Mint traz a riqueza dos ingredientes naturais em uma nova assinatura de frescor. Fragrância moderna que contrasta as notas tônicas da Menta Marroquina Nanah com a força e a sofisticação do Cedro. Criação marcante que combina frescor com intensidade.      Família olfativa: Fougère Fresco. ",
+        "preco": 279.9,
+        "categoria": "MASCULINO",
+        "estoque": 40,
+        "volumeMl": 90,
+        "marcaId": 1,
+        "foto": "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B47630/75247b72-c181-482d-ae93-36794efee230-bot-47630-segredinho.jpg"
+    }
+]
